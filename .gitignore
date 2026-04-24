@@ -1,0 +1,25 @@
+# Environment files with secrets
+.env
+
+# Node.js
+node_modules/
+.svelte-kit/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.dylib
+
+# Build artifacts
+frontend/build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
