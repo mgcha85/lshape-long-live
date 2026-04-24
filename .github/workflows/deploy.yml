@@ -64,18 +64,18 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            # Login to GHCR
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            # Login to GHCR (podman)
+            echo "${{ secrets.GHCR_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
             
             # Pull latest image
-            docker pull ghcr.io/${{ github.repository }}:latest
+            podman pull ghcr.io/${{ github.repository }}:latest
             
             # Stop and remove existing container if exists
-            docker stop lshape-engine 2>/dev/null || true
-            docker rm lshape-engine 2>/dev/null || true
+            podman stop lshape-engine 2>/dev/null || true
+            podman rm lshape-engine 2>/dev/null || true
             
             # Run new container
-            docker run -d \
+            podman run -d \
               --name lshape-engine \
               --restart unless-stopped \
               -p 8080:8080 \
@@ -97,7 +97,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             echo "=== Container Status ==="
-            docker ps -f name=lshape-engine
+            podman ps -f name=lshape-engine
             echo ""
             echo "=== Health Check ==="
             curl -s http://localhost:8080/api/status | head -c 500
